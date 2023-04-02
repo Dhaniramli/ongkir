@@ -58,6 +58,12 @@ class Kota extends GetView<HomeController> {
             return List<City>.empty();
           }
         },
+        clearButtonProps: const ClearButtonProps(
+          color: Colors.red,
+          icon: Icon(Icons.clear),
+          padding: EdgeInsets.all(8),
+          isVisible: true,
+        ),
         itemAsString: (City city) => "${city.type} ${city.cityName}",
         onChanged: (value) {
           if (value != null) {
@@ -66,15 +72,16 @@ class Kota extends GetView<HomeController> {
             } else {
               controller.kotaIdTujuan.value = int.parse(value.cityId!);
             }
+            controller.showButton();
           } else {
             if (tipe == "asal") {
               print("Tidak Memilih kota / kabupaten asal apapun");
+              controller.kotaIdAsal.value = 0;
             } else {
               print("Tidak Memilih kota / kabupaten tujuan apapun");
+              controller.kotaIdTujuan.value = 0;
             }
           }
-
-          print("${value!.type} ${value.cityName}");
         },
       ),
     );

@@ -54,6 +54,12 @@ class Provinsi extends GetView<HomeController> {
             return List<Province>.empty();
           }
         },
+        clearButtonProps: const ClearButtonProps(
+          color: Colors.red,
+          icon: Icon(Icons.clear),
+          padding: EdgeInsets.all(8),
+          isVisible: true,
+        ),
         itemAsString: (Province province) => province.province as String,
         onChanged: (value) {
           if (value != null) {
@@ -64,6 +70,7 @@ class Provinsi extends GetView<HomeController> {
               controller.hiddenKotaTujuan.value = false;
               controller.provIdTujuan.value = int.parse(value.provinceId!);
             }
+            controller.showButton();
           } else {
             if (tipe == "asal") {
               controller.hiddenKotaAsal.value = true;
@@ -74,9 +81,6 @@ class Provinsi extends GetView<HomeController> {
             }
           }
         },
-        clearButtonProps: ClearButtonProps(
-          onPressed: () {},
-        ),
       ),
     );
   }
