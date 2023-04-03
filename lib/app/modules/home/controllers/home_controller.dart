@@ -1,5 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+
+import '../courier_model.dart';
+import '../courier_model.dart';
 
 class HomeController extends GetxController {
   var hiddenKotaAsal = true.obs;
@@ -15,6 +21,52 @@ class HomeController extends GetxController {
   String satuan = "gram";
 
   late TextEditingController beratC;
+
+  Future<void> ongkosKirim() async {
+    Uri url = Uri.parse("https://api.rajaongkir.com/starter/cost");
+    try {
+      final response = await http.post(
+        url,
+        body: {
+          "origin": "$kotaIdAsal",
+          "destination": "$kotaIdTujuan",
+          "weight": "$berat",
+          "courier": "$kurir",
+        },
+        headers: {
+          "key": "b1001cc0089b53bc6c7f628d7112ce2e",
+          "content-type": "application/x-www-form-urlencoded"
+        },
+      );
+
+      var data = json.decode(response.body) as Map<String, dynamic>;
+      var results = data["rajaongkir"]["results"] as List<dynamic>;
+
+      var listAllCourier = Courier.fromJsonList(results);
+      var courier = listAllCourier[0];
+
+      Get.defaultDialog(
+        title: courier.name,
+        content: Column(
+          children: courier.costs
+              .map(
+                (e) => ListTile(
+                  title: Text("${e.service}"),
+                  subtitle: Text("Rp.${e.cost[0].value}"),
+                  trailing: Text(courier.code == "pos"
+                      ? "${e.cost[0].etd}"
+                      : "${e.cost[0].etd} HARI"),
+                ),
+              )
+              .toList(),
+        ),
+      );
+
+      print(results);
+    } catch (err) {
+      print(err);
+    }
+  }
 
   void showButton() {
     if (kotaIdAsal != 0 && kotaIdTujuan != 0 && berat > 0 && kurir != "") {

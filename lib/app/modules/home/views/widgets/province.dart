@@ -70,7 +70,6 @@ class Provinsi extends GetView<HomeController> {
               controller.hiddenKotaTujuan.value = false;
               controller.provIdTujuan.value = int.parse(value.provinceId!);
             }
-            controller.showButton();
           } else {
             if (tipe == "asal") {
               controller.hiddenKotaAsal.value = true;
@@ -80,6 +79,7 @@ class Provinsi extends GetView<HomeController> {
               controller.provIdTujuan.value = 0;
             }
           }
+          controller.showButton();
         },
       ),
     );

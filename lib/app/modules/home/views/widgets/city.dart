@@ -24,7 +24,7 @@ class Kota extends GetView<HomeController> {
         dropdownDecoratorProps: DropDownDecoratorProps(
           dropdownSearchDecoration: InputDecoration(
             border: OutlineInputBorder(),
-            label: tipe == "tujuan"
+            label: tipe == "asal"
                 ? Text("Kota / Kabupaten Asal")
                 : Text("Kota / Kabupaten Tujuan"),
           ),
@@ -72,7 +72,6 @@ class Kota extends GetView<HomeController> {
             } else {
               controller.kotaIdTujuan.value = int.parse(value.cityId!);
             }
-            controller.showButton();
           } else {
             if (tipe == "asal") {
               print("Tidak Memilih kota / kabupaten asal apapun");
@@ -82,6 +81,7 @@ class Kota extends GetView<HomeController> {
               controller.kotaIdTujuan.value = 0;
             }
           }
+          controller.showButton();
         },
       ),
     );
